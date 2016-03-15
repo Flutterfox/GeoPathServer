@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import trenton.fox.model.Location;
+import trenton.fox.model.*;
 
 public class OracleHelper {
 	private Connection getConnection() throws ClassNotFoundException, SQLException{
@@ -57,17 +57,16 @@ public class OracleHelper {
 		}
 	}
 	
-	public void insertPath(String pathID, String userID, String label,
-			String description) throws SQLException, ClassNotFoundException {
+	public void insertPath(Path path) throws SQLException, ClassNotFoundException {
 		Connection conn = getConnection();
 
 		try {
 			CallableStatement storedproc = conn.prepareCall("{call GEOPATH.INSERTPATH(?,?,?,?)}");
 
-			storedproc.setString(1, pathID);
-			storedproc.setString(2, userID);
-			storedproc.setString(3, label);
-			storedproc.setString(4, description);
+			storedproc.setString(1, path.getPathID());
+			storedproc.setString(2, path.getUserID());
+			storedproc.setString(3, path.getLabel());
+			storedproc.setString(4, path.getDescription());
 			
 			storedproc.execute();
 		} catch (SQLException e) {

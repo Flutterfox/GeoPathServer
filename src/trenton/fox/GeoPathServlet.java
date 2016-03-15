@@ -3,6 +3,7 @@ package trenton.fox;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -15,6 +16,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
+
+import trenton.fox.model.Location;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
@@ -49,10 +53,10 @@ public class GeoPathServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     @PUT
-    @Path("/{userID}")
+    @Path("/insertUser")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-	protected String doPut(@PathParam("userID") String userID) {
+	protected String doPut(String userID) {
     	OracleHelper oh = new OracleHelper();
     	try {
 			oh.insertUser(userID);
@@ -66,39 +70,6 @@ public class GeoPathServlet {
 		return "success";
 	}
 	
-    @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.APPLICATION_JSON)
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 
-        try {
-            int length = request.getContentLength();
-            byte[] input = new byte[length];
-            ServletInputStream sin = request.getInputStream();
-            int c, count = 0 ;
-            while ((c = sin.read(input, count, input.length-count)) != -1) {
-                count +=c;
-            }
-            sin.close();
- 
-            String recievedString = new String(input);
-            response.setStatus(HttpServletResponse.SC_OK);
-            OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream());
- 
-            Integer doubledValue = Integer.parseInt(recievedString) * 2;
- 
-            //Send response
-            writer.write(doubledValue.toString());
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            try{
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(e.getMessage());
-                response.getWriter().close();
-            } catch (IOException ioe) {
-            }
-        }   
-    }
+
 
 }
