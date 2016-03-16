@@ -1,8 +1,6 @@
 package trenton.fox.resource;
 
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.Produces;
 import javax.servlet.ServletException;
 import javax.ws.rs.Consumes;
@@ -11,22 +9,16 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Request;
 
 import trenton.fox.CreatePath;
 import trenton.fox.OracleHelper;
 import trenton.fox.model.Location;
 
-import javax.ws.rs.core.Request;
-
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 @Path("path")
 public class PathResource {
@@ -82,7 +74,7 @@ public class PathResource {
     @Path("/insertPath")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-	protected String doPut(trenton.fox.model.Path path) {
+	public String doPut(trenton.fox.model.Path path) {
     	OracleHelper oh = new OracleHelper();
     	try {
 			oh.insertPath(path);

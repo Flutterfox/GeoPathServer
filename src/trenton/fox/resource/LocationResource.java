@@ -84,7 +84,7 @@ public class LocationResource {
     @Path("/insertLocation")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-	protected String doPut(Location location) {
+	public String doPut(Location location) {
     	OracleHelper oh = new OracleHelper();
     	try {
 			oh.insertLoc(location);

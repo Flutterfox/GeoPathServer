@@ -6,18 +6,23 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import trenton.fox.model.*;
-
+import trenton.fox.model.Location;
+import trenton.fox.model.Path;
 public class OracleHelper {
 	private Connection getConnection() throws ClassNotFoundException, SQLException{
-		String driver_class = "oracle.jdbc.driver.OracleDriver";
-		String connect_string = "jdbc:oracle:thin:@localhost:1521:xe";
+		//String driver_class = "oracle.jdbc.driver.OracleDriver";
+		//Class.forName (driver_class);
+		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "SYSTEM";
+		String pass = "livestrong";
 
-		Class.forName(driver_class);
-		return DriverManager.getConnection(connect_string, "SYSTEM", "livestrong");
+		Connection conn = DriverManager.getConnection(url,user,pass);
+		
+		//Connection connection = DriverManager.getConnection(url, user, pass);
+		return conn;
+		
 	}
 	
 	public void insertLoc(Location location
