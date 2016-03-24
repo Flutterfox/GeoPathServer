@@ -3,17 +3,17 @@ package trenton.fox.model;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Path {
+public class CustomPath {
 	private String userID, label, description, pathID;
 	
-	public Path() {
+	public CustomPath() {
 		userID = "";
 		label = "";
 		description = "";
 		pathID = "";
 	}
 	
-	public Path(String userID, String label, String description, String pathID) {
+	public CustomPath(String userID, String label, String description, String pathID) {
 		this.userID = userID;
 		this.label = label;
 		this.description = description;

@@ -14,7 +14,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
 
 import trenton.fox.OracleHelper;
-import trenton.fox.model.Location;
+import trenton.fox.model.CustomLocation;
 
 import javax.ws.rs.core.Request;
 
@@ -35,9 +35,10 @@ public class LocationResource {
 	private final static String LATITUDE = "lat";
 	private final static String LONGITUDE = "lon";
 	private final static String TIMESTAMP = "timestamp";
+	private final static String POSITION = "position";
 	
-	private Location location = new Location("testID", 0, 0, "userID", new Date(),
-			"General", "General Location", "This is a general location description", "pathID");
+	private CustomLocation location = new CustomLocation("testID", 0D, 0D, "userID", new Date(),
+			"General", "General Location", "This is a general location description", "pathID", -1);
     
     // The @Context annotation allows us to have certain contextual objects
     // injected into this class.
@@ -59,14 +60,14 @@ public class LocationResource {
     @GET
     @Path("/sample")
     @Produces(MediaType.APPLICATION_JSON)
-    public Location getSampleLocation() { 
+    public CustomLocation getSampleLocation() { 
         return location;
     }
     
     @GET
     @Path("/returnbyuserid")
     @Produces(MediaType.APPLICATION_JSON)
-    public Location getLocations(String userID) { 
+    public CustomLocation getLocations(String userID) { 
         OracleHelper oh = new OracleHelper();
         try {
 			oh.returnLocations("general", userID);
@@ -84,7 +85,7 @@ public class LocationResource {
     @Path("/insertLocation")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-	public String doPut(Location location) {
+	public String doPut(CustomLocation location) {
     	OracleHelper oh = new OracleHelper();
     	try {
 			oh.insertLoc(location);
@@ -103,7 +104,7 @@ public class LocationResource {
 	@POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Location postLocation(
+    public CustomLocation postLocation(
             MultivaluedMap<String, String> locationParams
             ) {
          
@@ -116,17 +117,19 @@ public class LocationResource {
         String label = locationParams.getFirst(LABEL);
         String description = locationParams.getFirst(DESCRIPTION);
         String pathID = locationParams.getFirst(PATH_ID);
+        String position = locationParams.getFirst(POSITION);
         
          
         location.setLocID(locID);
-        location.setLat(Integer.parseInt(lat));
-        location.setLon(Integer.parseInt(lon));
+        location.setLat(Double.parseDouble(lat));
+        location.setLon(Double.parseDouble(lon));
         location.setUserID(userID);
         location.setTimestamp(new Date(timestamp));
         location.setType(type);
         location.setLabel(label);
         location.setDescription(description);
         location.setPathID(pathID);
+        location.setPosition(Integer.parseInt(position));
          
         return location;
                          

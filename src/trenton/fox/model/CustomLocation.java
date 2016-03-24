@@ -4,26 +4,27 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Location {
+public class CustomLocation implements Comparable<CustomLocation> {
 	private String locID, userID, type, label, description, pathID;
-	private int lat, lon;
+	private double lat, lon;
 	private Date timestamp;
-	
-	public Location() {
+	private int position;
+
+	public CustomLocation() {
 		locID = "";
 		userID = "";
 		type = "";
 		label = "";
 		description = "";
 		pathID = "";
-		lat = -1;
-		lon = -1;
+		lat = -1D;
+		lon = -1D;
 		timestamp = new Date();
+		setPosition(-1);
 	}
-	
-	public Location(String locID, int lat, int lon,
-			String userID, Date timestamp, String type,
-			String label, String description, String pathID) {
+
+	public CustomLocation(String locID, Double lat, Double lon, String userID, Date timestamp, String type, String label,
+			String description, String pathID, int position) {
 		this.locID = locID;
 		this.lat = lat;
 		this.lon = lon;
@@ -33,69 +34,92 @@ public class Location {
 		this.label = label;
 		this.description = description;
 		this.pathID = pathID;
+		this.position = position;
 	}
-	
+
 	public String getLocID() {
 		return locID;
 	}
+
 	public void setLocID(String locID) {
 		this.locID = locID;
 	}
-	
+
 	public String getUserID() {
 		return userID;
 	}
+
 	public void setUserID(String userID) {
 		this.userID = userID;
 	}
-	
+
 	public String getType() {
 		return type;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	public String getLabel() {
 		return label;
 	}
+
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public String getPathID() {
 		return pathID;
 	}
+
 	public void setPathID(String pathID) {
 		this.pathID = pathID;
 	}
-	
-	public int getLat() {
+
+	public double getLat() {
 		return lat;
 	}
-	public void setLat(int lat) {
+
+	public void setLat(double lat) {
 		this.lat = lat;
 	}
-	
-	public int getLon() {
+
+	public double getLon() {
 		return lon;
 	}
-	public void setLon(int lon) {
+
+	public void setLon(double lon) {
 		this.lon = lon;
 	}
-	
+
 	public Date getTimestamp() {
 		return timestamp;
 	}
+
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
-	
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
+	@Override
+	public int compareTo(CustomLocation o) {
+		return getTimestamp().compareTo(o.getTimestamp());
+	}
+
 }

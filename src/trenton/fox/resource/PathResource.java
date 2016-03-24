@@ -14,7 +14,7 @@ import javax.ws.rs.core.Request;
 
 import trenton.fox.CreatePath;
 import trenton.fox.OracleHelper;
-import trenton.fox.model.Location;
+import trenton.fox.model.CustomLocation;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -27,7 +27,7 @@ public class PathResource {
 	private final static String DESCRIPTION = "description";
 	private final static String PATH_ID = "pathID";
 	
-	private trenton.fox.model.Path path = new trenton.fox.model.Path("userID", "General Location", "This is a general location description", "pathID");
+	private trenton.fox.model.CustomPath path = new trenton.fox.model.CustomPath("userID", "General Location", "This is a general location description", "pathID");
     
     // The @Context annotation allows us to have certain contextual objects
     // injected into this class.
@@ -49,14 +49,14 @@ public class PathResource {
     @GET
     @Path("/sample")
     @Produces(MediaType.APPLICATION_JSON)
-    public trenton.fox.model.Path getSamplePath() { 
+    public trenton.fox.model.CustomPath getSamplePath() { 
         return path;
     }
     
     @GET
     @Path("/returnbyuserid")
     @Produces(MediaType.APPLICATION_JSON)
-    public trenton.fox.model.Path getPaths(String userID) { 
+    public trenton.fox.model.CustomPath getPaths(String userID) { 
         OracleHelper oh = new OracleHelper();
         try {
 			oh.returnLocations("general", userID);
@@ -74,7 +74,7 @@ public class PathResource {
     @Path("/insertPath")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-	public String doPut(trenton.fox.model.Path path) {
+	public String doPut(trenton.fox.model.CustomPath path) {
     	OracleHelper oh = new OracleHelper();
     	try {
 			oh.insertPath(path);
@@ -93,9 +93,18 @@ public class PathResource {
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-	public trenton.fox.model.Path doPost(List<Location> locations) throws ServletException, IOException {
+	public trenton.fox.model.CustomPath doPost(List<CustomLocation> locations) throws ServletException, IOException {
 		CreatePath cp = new CreatePath(locations);
 
+		OracleHelper oh = new OracleHelper();
+    	try {
+			oh.insertPath(cp.GetPath());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
     	return cp.GetPath();
     }
 }

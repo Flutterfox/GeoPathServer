@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-import trenton.fox.model.Location;
-import trenton.fox.model.Path;
+import trenton.fox.model.CustomLocation;
+import trenton.fox.model.CustomPath;
 public class OracleHelper {
 	private Connection getConnection() throws ClassNotFoundException, SQLException{
 		//String driver_class = "oracle.jdbc.driver.OracleDriver";
@@ -25,22 +25,23 @@ public class OracleHelper {
 		
 	}
 	
-	public void insertLoc(Location location
+	public void insertLoc(CustomLocation location
 			) throws SQLException, ClassNotFoundException {
 		Connection conn = getConnection();
 
 		try {
-			CallableStatement storedproc = conn.prepareCall("{call GEOPATH.INSERTLOC(?,?,?,?,?,?,?,?,?)}");
+			CallableStatement storedproc = conn.prepareCall("{call GEOPATH.INSERTLOC(?,?,?,?,?,?,?,?,?,?)}");
 
 			storedproc.setString(1, location.getLocID());
-			storedproc.setInt(2, location.getLat());
-			storedproc.setInt(3, location.getLon());
+			storedproc.setDouble(2, location.getLat());
+			storedproc.setDouble(3, location.getLon());
 			storedproc.setString(4, location.getUserID());
-			storedproc.setDate(5, (java.sql.Date) location.getTimestamp());
+			storedproc.setDate(5, new java.sql.Date(location.getTimestamp().getTime()));
 			storedproc.setString(6, location.getType());
 			storedproc.setString(7, location.getLabel());
 			storedproc.setString(8, location.getDescription());
 			storedproc.setString(9, location.getPathID());
+			storedproc.setInt(10, location.getPosition());
 
 			storedproc.execute();
 		} catch (SQLException e) {
@@ -62,7 +63,7 @@ public class OracleHelper {
 		}
 	}
 	
-	public void insertPath(Path path) throws SQLException, ClassNotFoundException {
+	public void insertPath(CustomPath path) throws SQLException, ClassNotFoundException {
 		Connection conn = getConnection();
 
 		try {
@@ -107,12 +108,12 @@ public class OracleHelper {
 		}
 	}
 	
-	public Location returnLocation(String locID) throws SQLException, ClassNotFoundException {
+	public CustomLocation returnLocation(String locID) throws SQLException, ClassNotFoundException {
 		Connection conn = getConnection();
-		Location location = new Location();
+		CustomLocation location = new CustomLocation();
 		
 		try {
-			CallableStatement storedproc = conn.prepareCall("{call GEOPATH.RETURNLOCATION(?,?,?,?,?,?,?,?,?,?)}");
+			CallableStatement storedproc = conn.prepareCall("{call GEOPATH.RETURNLOCATION(?,?,?,?,?,?,?,?,?,?,?)}");
 			storedproc.registerOutParameter(2, Types.VARCHAR);
 			storedproc.registerOutParameter(3, Types.NUMERIC);
 			storedproc.registerOutParameter(4, Types.NUMERIC);
@@ -122,6 +123,7 @@ public class OracleHelper {
 			storedproc.registerOutParameter(8, Types.VARCHAR);
 			storedproc.registerOutParameter(9, Types.VARCHAR);
 			storedproc.registerOutParameter(10, Types.VARCHAR);
+			storedproc.registerOutParameter(11, Types.INTEGER);
 			
 			storedproc.setString(1, locID);
 			
@@ -136,6 +138,7 @@ public class OracleHelper {
 			location.setLabel(storedproc.getString(8));
 			location.setDescription(storedproc.getString(9));
 			location.setPathID(storedproc.getString(10));
+			location.setPosition(storedproc.getInt(11));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -146,10 +149,10 @@ public class OracleHelper {
 	public List returnLocations(String type, String userID) throws ClassNotFoundException, SQLException {
 		//THIS NEEDS REWORKING TO ALLOW FOR MULTIPLE RETURNS
 		Connection conn = getConnection();
-		Location location = new Location();
+		CustomLocation location = new CustomLocation();
 		
 		try {
-			CallableStatement storedproc = conn.prepareCall("{call GEOPATH.RETURNLOCATION(?,?,?,?,?,?,?,?,?,?,?)}");
+			CallableStatement storedproc = conn.prepareCall("{call GEOPATH.RETURNLOCATION(?,?,?,?,?,?,?,?,?,?,?,?)}");
 			storedproc.registerOutParameter(3, Types.VARCHAR);
 			storedproc.registerOutParameter(4, Types.NUMERIC);
 			storedproc.registerOutParameter(5, Types.NUMERIC);
@@ -159,6 +162,7 @@ public class OracleHelper {
 			storedproc.registerOutParameter(9, Types.VARCHAR);
 			storedproc.registerOutParameter(10, Types.VARCHAR);
 			storedproc.registerOutParameter(11, Types.VARCHAR);
+			storedproc.registerOutParameter(12, Types.INTEGER);
 			
 			storedproc.setString(1, type);
 			storedproc.setString(2, userID);
@@ -174,6 +178,7 @@ public class OracleHelper {
 			location.setLabel(storedproc.getString(8));
 			location.setDescription(storedproc.getString(9));
 			location.setPathID(storedproc.getString(10));
+			location.setPosition(storedproc.getInt(11));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
