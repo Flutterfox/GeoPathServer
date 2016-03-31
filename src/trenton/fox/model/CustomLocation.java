@@ -3,6 +3,8 @@ package trenton.fox.model;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+
 @XmlRootElement
 public class CustomLocation implements Comparable<CustomLocation> {
 	private String locID, userID, type, label, description, pathID;
@@ -62,6 +64,9 @@ public class CustomLocation implements Comparable<CustomLocation> {
 	}
 
 	public String getLabel() {
+		if (label == "") {
+			return "null";
+		}
 		return label;
 	}
 
@@ -70,6 +75,9 @@ public class CustomLocation implements Comparable<CustomLocation> {
 	}
 
 	public String getDescription() {
+		if (label == "") {
+			return "null";
+		}
 		return description;
 	}
 
@@ -78,6 +86,9 @@ public class CustomLocation implements Comparable<CustomLocation> {
 	}
 
 	public String getPathID() {
+		if (pathID == "") {
+			return "null";
+		}
 		return pathID;
 	}
 
@@ -105,6 +116,7 @@ public class CustomLocation implements Comparable<CustomLocation> {
 		return timestamp;
 	}
 
+	@JsonDeserialize(using=CustomDateDeserializer.class)
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}

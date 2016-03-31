@@ -1,6 +1,8 @@
 package trenton.fox.resource;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -49,10 +51,11 @@ public class UserResource {
     @POST
     @Path("/insert")
     @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
 	public String doPut(String userID) {
     	OracleHelper oh = new OracleHelper();
     	try {
+    		userID = userID.substring(7, userID.length()-1);
 			oh.insertUser(userID);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

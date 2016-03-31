@@ -64,7 +64,7 @@ public class LocationResource {
         return location;
     }
     
-    @GET
+    @POST
     @Path("/returnbyuserid")
     @Produces(MediaType.APPLICATION_JSON)
     public CustomLocation getLocations(String userID) { 

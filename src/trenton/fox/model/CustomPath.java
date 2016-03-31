@@ -28,6 +28,9 @@ public class CustomPath {
 	}
 	
 	public String getLabel() {
+		if (label == "") {
+			return "null";
+		}
 		return label;
 	}
 	public void setLabel(String label) {
@@ -35,6 +38,9 @@ public class CustomPath {
 	}
 	
 	public String getDescription() {
+		if (description == "") {
+			return "null";
+		}
 		return description;
 	}
 	public void setDescription(String description) {

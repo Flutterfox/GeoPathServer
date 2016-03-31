@@ -12,9 +12,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Request;
 
+import trenton.fox.Analysis;
 import trenton.fox.CreatePath;
 import trenton.fox.OracleHelper;
 import trenton.fox.model.CustomLocation;
+import trenton.fox.model.CustomPath;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -49,14 +51,14 @@ public class PathResource {
     @GET
     @Path("/sample")
     @Produces(MediaType.APPLICATION_JSON)
-    public trenton.fox.model.CustomPath getSamplePath() { 
+    public CustomPath getSamplePath() { 
         return path;
     }
     
-    @GET
+    @POST
     @Path("/returnbyuserid")
     @Produces(MediaType.APPLICATION_JSON)
-    public trenton.fox.model.CustomPath getPaths(String userID) { 
+    public CustomPath getPaths(String userID) { 
         OracleHelper oh = new OracleHelper();
         try {
 			oh.returnLocations("general", userID);
@@ -70,22 +72,24 @@ public class PathResource {
     	return path;
     }
     
-    @PUT
-    @Path("/insertPath")
+    @POST
+    @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-	public String doPut(trenton.fox.model.CustomPath path) {
+    @Produces(MediaType.APPLICATION_JSON)
+	public List<CustomLocation> doUpdate(trenton.fox.model.CustomPath path) {
+    	List<CustomLocation> locList = null;
+    	
     	OracleHelper oh = new OracleHelper();
     	try {
-			oh.insertPath(path);
+			oh.updatePath(path);
+			locList = oh.returnLocations(path.getPathID());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			return "failure";
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return "failure";
 		}
-		return "success";
+    	
+    	return locList;
 	}
          
     // Use data from the client source to create a new Location object, returned in JSON format.  
@@ -93,18 +97,14 @@ public class PathResource {
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-	public trenton.fox.model.CustomPath doPost(List<CustomLocation> locations) throws ServletException, IOException {
-		CreatePath cp = new CreatePath(locations);
-
-		OracleHelper oh = new OracleHelper();
-    	try {
-			oh.insertPath(cp.GetPath());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public CustomPath doPost(List<CustomLocation> locations) throws ServletException, IOException {
+		CreatePath createPath = new CreatePath(locations);
+		CustomPath cp = createPath.GetPath();
 		
-    	return cp.GetPath();
+		Analysis analysis = new Analysis();
+		analysis.setup(locations, cp.getPathID());
+		new Thread(analysis).start();
+		
+    	return cp;
     }
 }
