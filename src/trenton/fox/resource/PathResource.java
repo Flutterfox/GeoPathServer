@@ -49,14 +49,14 @@ public class PathResource {
     }
  
     @GET
-    @Path("/sample")
+    @Path("sample")
     @Produces(MediaType.APPLICATION_JSON)
     public CustomPath getSamplePath() { 
         return path;
     }
     
     @POST
-    @Path("/returnbyuserid")
+    @Path("returnbyuserid")
     @Produces(MediaType.APPLICATION_JSON)
     public CustomPath getPaths(String userID) { 
         OracleHelper oh = new OracleHelper();
@@ -73,7 +73,7 @@ public class PathResource {
     }
     
     @POST
-    @Path("/update")
+    @Path("update")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
 	public List<CustomLocation> doUpdate(trenton.fox.model.CustomPath path) {
@@ -83,6 +83,11 @@ public class PathResource {
     	try {
 			oh.updatePath(path);
 			locList = oh.returnLocations(path.getPathID());
+			
+			System.out.println("New Path");
+			for (CustomLocation cl : locList) {
+				System.out.println(cl.getLocID() + " " + cl.getPosition());
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -94,7 +99,7 @@ public class PathResource {
          
     // Use data from the client source to create a new Location object, returned in JSON format.  
     @POST
-    @Path("/create")
+    @Path("create")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
 	public CustomPath doPost(List<CustomLocation> locations) throws ServletException, IOException {

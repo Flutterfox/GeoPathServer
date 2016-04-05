@@ -1,9 +1,17 @@
 package trenton.fox.model;
 
+import java.io.IOException;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.JsonSerializer;
+import org.codehaus.jackson.map.SerializerProvider;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import trenton.fox.CustomDateSerializer;
 
 @XmlRootElement
 public class CustomLocation implements Comparable<CustomLocation> {
@@ -112,11 +120,12 @@ public class CustomLocation implements Comparable<CustomLocation> {
 		this.lon = lon;
 	}
 
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getTimestamp() {
 		return timestamp;
 	}
 
-	@JsonDeserialize(using=CustomDateDeserializer.class)
+	@JsonDeserialize(using = CustomDateDeserializer.class)
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}

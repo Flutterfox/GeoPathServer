@@ -42,14 +42,14 @@ public class UserResource {
     }
  
     @GET
-    @Path("/sample")
+    @Path("sample")
     @Produces(MediaType.TEXT_PLAIN)
     public String getSamplePath() { 
         return "SampleUser";
     }
 
     @POST
-    @Path("/insert")
+    @Path("insert")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
 	public String doPut(String userID) {

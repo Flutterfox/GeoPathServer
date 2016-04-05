@@ -58,14 +58,14 @@ public class LocationResource {
     }
  
     @GET
-    @Path("/sample")
+    @Path("sample")
     @Produces(MediaType.APPLICATION_JSON)
     public CustomLocation getSampleLocation() { 
         return location;
     }
     
     @POST
-    @Path("/returnbyuserid")
+    @Path("returnbyuserid")
     @Produces(MediaType.APPLICATION_JSON)
     public CustomLocation getLocations(String userID) { 
         OracleHelper oh = new OracleHelper();
@@ -82,7 +82,7 @@ public class LocationResource {
     }
     
     @PUT
-    @Path("/insertLocation")
+    @Path("insertLocation")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
 	public String doPut(CustomLocation location) {
