@@ -20,6 +20,7 @@ import trenton.fox.model.CustomPath;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 @Path("path")
@@ -84,9 +85,10 @@ public class PathResource {
 			oh.updatePath(path);
 			locList = oh.returnLocations(path.getPathID());
 			
-			System.out.println("New Path");
+			System.out.println("New Path: " + new Date());
 			for (CustomLocation cl : locList) {
 				System.out.println(cl.getLocID() + " " + cl.getPosition());
+				System.out.println(cl.getLat() + ", " + cl.getLon());
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

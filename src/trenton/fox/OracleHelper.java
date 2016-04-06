@@ -178,8 +178,8 @@ public class OracleHelper {
 			storedproc.execute();
 			
 			location.setLocID(storedproc.getString(2));
-			location.setLat(storedproc.getInt(3));
-			location.setLon(storedproc.getInt(4));
+			location.setLat(storedproc.getDouble(3));
+			location.setLon(storedproc.getDouble(4));
 			location.setUserID(storedproc.getString(5));
 			location.setTimestamp(storedproc.getDate(6));
 			location.setType(storedproc.getString(7));
@@ -220,8 +220,8 @@ public class OracleHelper {
 			while (rs.next()) {
 				location = new CustomLocation();
 				location.setLocID(storedproc.getString(2));
-				location.setLat(storedproc.getInt(3));
-				location.setLon(storedproc.getInt(4));
+				location.setLat(storedproc.getDouble(3));
+				location.setLon(storedproc.getDouble(4));
 				location.setUserID(storedproc.getString(5));
 				location.setTimestamp(storedproc.getDate(6));
 				location.setType(storedproc.getString(7));
@@ -256,8 +256,8 @@ public class OracleHelper {
 			while (rs.next()) {
 				location = new CustomLocation();
 				location.setLocID(rs.getString(1));
-				location.setLat(rs.getInt(2));
-				location.setLon(rs.getInt(3));
+				location.setLat(rs.getDouble(2));
+				location.setLon(rs.getDouble(3));
 				location.setUserID(rs.getString(4));
 				location.setTimestamp(rs.getDate(5));
 				location.setType(rs.getString(6));
