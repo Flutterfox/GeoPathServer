@@ -11,6 +11,7 @@ import org.codehaus.jackson.map.SerializerProvider;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import trenton.fox.CustomDateDeserializer;
 import trenton.fox.CustomDateSerializer;
 
 @XmlRootElement
@@ -19,6 +20,7 @@ public class CustomLocation implements Comparable<CustomLocation> {
 	private double lat, lon;
 	private Date timestamp;
 	private int position;
+	private double distance;
 
 	public CustomLocation() {
 		locID = "";
@@ -141,6 +143,14 @@ public class CustomLocation implements Comparable<CustomLocation> {
 	@Override
 	public int compareTo(CustomLocation o) {
 		return getTimestamp().compareTo(o.getTimestamp());
+	}
+
+	public double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
 	}
 
 }

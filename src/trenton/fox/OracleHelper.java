@@ -50,7 +50,7 @@ public class OracleHelper {
 
 			storedproc.execute();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			updateLoc(location);
 		}
 	}
 	
@@ -223,7 +223,7 @@ public class OracleHelper {
 				location.setLat(storedproc.getDouble(3));
 				location.setLon(storedproc.getDouble(4));
 				location.setUserID(storedproc.getString(5));
-				location.setTimestamp(storedproc.getDate(6));
+				location.setTimestamp(storedproc.getTimestamp(6));
 				location.setType(storedproc.getString(7));
 				location.setLabel(storedproc.getString(8));
 				location.setDescription(storedproc.getString(9));
@@ -259,7 +259,7 @@ public class OracleHelper {
 				location.setLat(rs.getDouble(2));
 				location.setLon(rs.getDouble(3));
 				location.setUserID(rs.getString(4));
-				location.setTimestamp(rs.getDate(5));
+				location.setTimestamp(rs.getTimestamp(5));
 				location.setType(rs.getString(6));
 				location.setLabel(rs.getString(7));
 				location.setDescription(rs.getString(8));

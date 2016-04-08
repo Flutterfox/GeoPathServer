@@ -22,6 +22,7 @@ public class CreatePath {
 	  		new String();
 			cp.setPathID(String.valueOf(new Date().getTime()) + cp.getUserID());
 			savePath();
+			saveLocations();
 		}
 	}
 
@@ -42,6 +43,22 @@ public class CreatePath {
 		}
 	}
 	
+	private void saveLocations() {
+		OracleHelper oh = new OracleHelper();
+		System.out.println(locations.size());
+		for (CustomLocation cl : locations) {
+			cl.setPathID(cp.getPathID());
+			try {
+				oh.insertLoc(cl);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
 
 }

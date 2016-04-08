@@ -29,39 +29,40 @@ public class PathResource {
 	private final static String LABEL = "label";
 	private final static String DESCRIPTION = "description";
 	private final static String PATH_ID = "pathID";
-	
-	private trenton.fox.model.CustomPath path = new trenton.fox.model.CustomPath("userID", "General Location", "This is a general location description", "pathID");
-    
-    // The @Context annotation allows us to have certain contextual objects
-    // injected into this class.
-    @Context
-    UriInfo uriInfo;
- 
-    // Another "injected" object. This allows us to use the information that's
-    // part of any incoming request.
-    @Context
-    Request request;
-     
-    // Basic "is the service running" test
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String respondAsReady() {
-        return "Demo service is ready!";
-    }
- 
-    @GET
-    @Path("sample")
-    @Produces(MediaType.APPLICATION_JSON)
-    public CustomPath getSamplePath() { 
-        return path;
-    }
-    
-    @POST
-    @Path("returnbyuserid")
-    @Produces(MediaType.APPLICATION_JSON)
-    public CustomPath getPaths(String userID) { 
-        OracleHelper oh = new OracleHelper();
-        try {
+
+	private trenton.fox.model.CustomPath path = new trenton.fox.model.CustomPath("userID", "General Location",
+			"This is a general location description", "pathID");
+
+	// The @Context annotation allows us to have certain contextual objects
+	// injected into this class.
+	@Context
+	UriInfo uriInfo;
+
+	// Another "injected" object. This allows us to use the information that's
+	// part of any incoming request.
+	@Context
+	Request request;
+
+	// Basic "is the service running" test
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String respondAsReady() {
+		return "Demo service is ready!";
+	}
+
+	@GET
+	@Path("sample")
+	@Produces(MediaType.APPLICATION_JSON)
+	public CustomPath getSamplePath() {
+		return path;
+	}
+
+	@POST
+	@Path("returnbyuserid")
+	@Produces(MediaType.APPLICATION_JSON)
+	public CustomPath getPaths(String userID) {
+		OracleHelper oh = new OracleHelper();
+		try {
 			oh.returnLocations("general", userID);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -70,48 +71,32 @@ public class PathResource {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	return path;
-    }
-    
-    @POST
-    @Path("update")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-	public List<CustomLocation> doUpdate(trenton.fox.model.CustomPath path) {
-    	List<CustomLocation> locList = null;
-    	
-    	OracleHelper oh = new OracleHelper();
-    	try {
-			oh.updatePath(path);
-			locList = oh.returnLocations(path.getPathID());
-			
-			System.out.println("New Path: " + new Date());
-			for (CustomLocation cl : locList) {
-				System.out.println(cl.getLocID() + " " + cl.getPosition());
-				System.out.println(cl.getLat() + ", " + cl.getLon());
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-    	
-    	return locList;
+		return path;
 	}
-         
-    // Use data from the client source to create a new Location object, returned in JSON format.  
-    @POST
-    @Path("create")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-	public CustomPath doPost(List<CustomLocation> locations) throws ServletException, IOException {
-		CreatePath createPath = new CreatePath(locations);
-		CustomPath cp = createPath.GetPath();
+
+	@POST
+	@Path("update")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<CustomLocation> doUpdate(CustomPath path) {
+		System.out.println("calculating path: " + path.getLabel());
 		
 		Analysis analysis = new Analysis();
-		analysis.setup(locations, cp.getPathID());
-		new Thread(analysis).start();
-		
-    	return cp;
-    }
+		analysis.setup(path);
+
+		return analysis.run();
+	}
+
+	// Use data from the client source to create a new Location object, returned
+	// in JSON format.
+	@POST
+	@Path("create")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public CustomPath doPost(List<CustomLocation> locations) throws ServletException, IOException {
+		System.out.println("Recieved path: " + path.getLabel());
+		CreatePath createPath = new CreatePath(locations);
+
+		return createPath.GetPath();
+	}
 }
