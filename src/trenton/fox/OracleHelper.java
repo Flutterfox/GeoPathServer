@@ -98,12 +98,13 @@ public class OracleHelper {
 		Connection conn = getConnection();
 
 		try {
-			CallableStatement storedproc = conn.prepareCall("{call GEOPATH.INSERTPATH(?,?,?,?)}");
+			CallableStatement storedproc = conn.prepareCall("{call GEOPATH.INSERTPATH(?,?,?,?,?)}");
 
 			storedproc.setString(1, path.getPathID());
 			storedproc.setString(2, path.getUserID());
 			storedproc.setString(3, path.getLabel());
 			storedproc.setString(4, path.getDescription());
+			storedproc.setString(5, path.getType());
 			
 			storedproc.execute();
 		} catch (SQLException e) {
@@ -115,12 +116,13 @@ public class OracleHelper {
 		Connection conn = getConnection();
 
 		try {
-			CallableStatement storedproc = conn.prepareCall("{call GEOPATH.UPDATEPATH(?,?,?,?)}");
+			CallableStatement storedproc = conn.prepareCall("{call GEOPATH.UPDATEPATH(?,?,?,?,?)}");
 
 			storedproc.setString(1, path.getPathID());
 			storedproc.setString(2, path.getUserID());
 			storedproc.setString(3, path.getLabel());
 			storedproc.setString(4, path.getDescription());
+			storedproc.setString(5, path.getType());
 			
 			storedproc.execute();
 		} catch (SQLException e) {

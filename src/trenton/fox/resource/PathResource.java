@@ -29,9 +29,10 @@ public class PathResource {
 	private final static String LABEL = "label";
 	private final static String DESCRIPTION = "description";
 	private final static String PATH_ID = "pathID";
+	private final static String TYPE = "type";
 
 	private trenton.fox.model.CustomPath path = new trenton.fox.model.CustomPath("userID", "General Location",
-			"This is a general location description", "pathID");
+			"This is a general location description", "pathID", "walking");
 
 	// The @Context annotation allows us to have certain contextual objects
 	// injected into this class.

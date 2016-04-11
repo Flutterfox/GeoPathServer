@@ -4,20 +4,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class CustomPath {
-	private String userID, label, description, pathID;
+	private String userID, label, description, pathID, type;
 	
 	public CustomPath() {
 		userID = "";
 		label = "";
 		description = "";
 		pathID = "";
+		type = "";
 	}
 	
-	public CustomPath(String userID, String label, String description, String pathID) {
+	public CustomPath(String userID, String label, String description, String pathID, String type) {
 		this.userID = userID;
 		this.label = label;
 		this.description = description;
 		this.pathID = pathID;
+		this.type = type;
 	}
 	
 	public String getUserID() {
@@ -52,5 +54,16 @@ public class CustomPath {
 	}
 	public void setPathID(String pathID) {
 		this.pathID = pathID;
+	}
+
+	public String getType() {
+		if (description == "") {
+			return "null";
+		}
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }
